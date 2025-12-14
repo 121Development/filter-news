@@ -1,12 +1,8 @@
 {
     "$schema": "../../../../../node_modules/wrangler/config-schema.json",
-    "name": "data-service-cron",
+    "name": "parser-service",
     "main": "index.ts",
     "compatibility_date": "2025-12-12",
-  
-    "triggers": {
-      "crons": ["*/1 * * * *"]
-    },
       "observability": {
         "logs": {
           "enabled": false,

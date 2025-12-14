@@ -13,9 +13,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.14.0",
+  "packageManager": "pnpm@10.25.0",
   "devDependencies": {
-    "@types/node": "^22.18.12",
+    "@types/node": "^22.19.3",
     "typescript": "^5.9.3"
   }
 }
