@@ -1,8 +1,9 @@
 {
     "$schema": "../../../../../node_modules/wrangler/config-schema.json",
-    "name": "data-service-cron",
+    "name": "cron-service",
     "main": "index.ts",
     "compatibility_date": "2025-12-12",
+    "compatibility_flags": ["nodejs_compat"],
   
     "triggers": {
       "crons": ["*/1 * * * *"]
@@ -14,5 +15,19 @@
           "invocation_logs": true,
           "persist": true
         }
-      }
+      },
+      "durable_objects": {
+        "bindings": [
+          {
+            "name": "AFTONBLADET_FEED_DO",
+            "class_name": "AftonbladetFeedDurableObject"
+          }
+        ]
+      },
+      "migrations": [
+        {
+          "tag": "v1",
+          "new_classes": ["AftonbladetFeedDurableObject"]
+        }
+      ]
     }

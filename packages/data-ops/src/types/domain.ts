@@ -1,25 +1,27 @@
-// src/types/domain.ts
+// types/domain.ts
 
 export type TimestampMs = number;
 export type UUID = string;
 
-export type PipelineStatus = "pending" | "ok" | "failed";
+// --- Core DB-ish types (simplified views) ---
 
 export interface Source {
-  id: string;
+  id: string;        // 'svt', 'bbc'
   name: string;
   homepageUrl?: string;
 }
 
 export interface Feed {
-  id: string;
+  id: string;        // 'svt-crime'
   sourceId: string;
   url: string;
   description?: string;
   language?: string;
-  region?: string;
+  region?: string;   // 'SE', 'GB', ...
   isActive: boolean;
 }
+
+export type PipelineStatus = "pending" | "ok" | "failed";
 
 export interface NewsItem {
   id: UUID;
@@ -58,7 +60,7 @@ export interface Event {
 
   representativeTitle?: string;
   currentSummary?: string;
-  dominantCategories?: string[];
+  dominantCategories?: string[];  // JSON column in DB
   severityScore?: number;
 
   embeddingRef?: string;
@@ -69,4 +71,13 @@ export interface Event {
 
   updatedSummaryAt?: TimestampMs;
   createdAt: TimestampMs;
+}
+
+export interface EventItem {
+  id: UUID;
+  eventId: UUID;
+  newsItemId: UUID;
+  sourceId: string;
+  url: string;
+  addedAt: TimestampMs;
 }

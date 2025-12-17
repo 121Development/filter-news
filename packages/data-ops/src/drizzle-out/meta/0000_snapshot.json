@@ -1,0 +1,622 @@
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "prevId": "",
+  "version": "6",
+  "dialect": "sqlite",
+  "tables": {
+    "event_items": {
+      "name": "event_items",
+      "columns": {
+        "id": {
+          "autoincrement": false,
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": false
+        },
+        "event_id": {
+          "autoincrement": false,
+          "name": "event_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "news_item_id": {
+          "autoincrement": false,
+          "name": "news_item_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source_id": {
+          "autoincrement": false,
+          "name": "source_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "url": {
+          "autoincrement": false,
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "added_at": {
+          "autoincrement": false,
+          "name": "added_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {},
+      "foreignKeys": {
+        "event_items_news_item_id_news_items_id_fk": {
+          "name": "event_items_news_item_id_news_items_id_fk",
+          "tableFrom": "event_items",
+          "tableTo": "news_items",
+          "columnsFrom": [
+            "news_item_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "event_items_event_id_events_id_fk": {
+          "name": "event_items_event_id_events_id_fk",
+          "tableFrom": "event_items",
+          "tableTo": "events",
+          "columnsFrom": [
+            "event_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "event_items_source_id_sources_id_fk": {
+          "name": "event_items_source_id_sources_id_fk",
+          "tableFrom": "event_items",
+          "tableTo": "sources",
+          "columnsFrom": [
+            "source_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "schema_version": {
+      "name": "schema_version",
+      "columns": {
+        "version": {
+          "autoincrement": false,
+          "name": "version",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": false
+        },
+        "applied_at": {
+          "autoincrement": false,
+          "name": "applied_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "autoincrement": false,
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "feeds": {
+      "name": "feeds",
+      "columns": {
+        "id": {
+          "autoincrement": false,
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": false
+        },
+        "source_id": {
+          "autoincrement": false,
+          "name": "source_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "url": {
+          "autoincrement": false,
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "autoincrement": false,
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "language": {
+          "autoincrement": false,
+          "name": "language",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "region": {
+          "autoincrement": false,
+          "name": "region",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_active": {
+          "default": 1,
+          "autoincrement": false,
+          "name": "is_active",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "autoincrement": false,
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "autoincrement": false,
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {},
+      "foreignKeys": {
+        "feeds_source_id_sources_id_fk": {
+          "name": "feeds_source_id_sources_id_fk",
+          "tableFrom": "feeds",
+          "tableTo": "sources",
+          "columnsFrom": [
+            "source_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "news_items": {
+      "name": "news_items",
+      "columns": {
+        "id": {
+          "autoincrement": false,
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": false
+        },
+        "source_id": {
+          "autoincrement": false,
+          "name": "source_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "feed_id": {
+          "autoincrement": false,
+          "name": "feed_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "url": {
+          "autoincrement": false,
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "item_guid": {
+          "autoincrement": false,
+          "name": "item_guid",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "title": {
+          "autoincrement": false,
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "published_at": {
+          "autoincrement": false,
+          "name": "published_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "fetched_at": {
+          "autoincrement": false,
+          "name": "fetched_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "language": {
+          "autoincrement": false,
+          "name": "language",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "location_hint": {
+          "autoincrement": false,
+          "name": "location_hint",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "content_raw_html": {
+          "autoincrement": false,
+          "name": "content_raw_html",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "content_text": {
+          "autoincrement": false,
+          "name": "content_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "hash_fingerprint": {
+          "autoincrement": false,
+          "name": "hash_fingerprint",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "parse_status": {
+          "default": "'pending'",
+          "autoincrement": false,
+          "name": "parse_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "categorize_status": {
+          "default": "'pending'",
+          "autoincrement": false,
+          "name": "categorize_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "compare_status": {
+          "default": "'pending'",
+          "autoincrement": false,
+          "name": "compare_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "error_count": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "error_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "last_error": {
+          "autoincrement": false,
+          "name": "last_error",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "archived_at": {
+          "autoincrement": false,
+          "name": "archived_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deleted_at": {
+          "autoincrement": false,
+          "name": "deleted_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "autoincrement": false,
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "autoincrement": false,
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {
+        "idx_news_items_published_at": {
+          "name": "idx_news_items_published_at",
+          "columns": [
+            "published_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "news_items_feed_id_feeds_id_fk": {
+          "name": "news_items_feed_id_feeds_id_fk",
+          "tableFrom": "news_items",
+          "tableTo": "feeds",
+          "columnsFrom": [
+            "feed_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "news_items_source_id_sources_id_fk": {
+          "name": "news_items_source_id_sources_id_fk",
+          "tableFrom": "news_items",
+          "tableTo": "sources",
+          "columnsFrom": [
+            "source_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "news_item_categories": {
+      "name": "news_item_categories",
+      "columns": {
+        "news_item_id": {
+          "autoincrement": false,
+          "name": "news_item_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "category": {
+          "autoincrement": false,
+          "name": "category",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "news_item_categories_news_item_id_category_pk": {
+          "columns": [
+            "news_item_id",
+            "category"
+          ],
+          "name": "news_item_categories_news_item_id_category_pk"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "news_item_categories_news_item_id_news_items_id_fk": {
+          "name": "news_item_categories_news_item_id_news_items_id_fk",
+          "tableFrom": "news_item_categories",
+          "tableTo": "news_items",
+          "columnsFrom": [
+            "news_item_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "news_item_tags": {
+      "name": "news_item_tags",
+      "columns": {
+        "news_item_id": {
+          "autoincrement": false,
+          "name": "news_item_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tag": {
+          "autoincrement": false,
+          "name": "tag",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "news_item_tags_news_item_id_tag_pk": {
+          "columns": [
+            "news_item_id",
+            "tag"
+          ],
+          "name": "news_item_tags_news_item_id_tag_pk"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "news_item_tags_news_item_id_news_items_id_fk": {
+          "name": "news_item_tags_news_item_id_news_items_id_fk",
+          "tableFrom": "news_item_tags",
+          "tableTo": "news_items",
+          "columnsFrom": [
+            "news_item_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "events": {
+      "name": "events",
+      "columns": {
+        "id": {
+          "autoincrement": false,
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": false
+        },
+        "first_seen_at": {
+          "autoincrement": false,
+          "name": "first_seen_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "autoincrement": false,
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "representative_title": {
+          "autoincrement": false,
+          "name": "representative_title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "current_summary": {
+          "autoincrement": false,
+          "name": "current_summary",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dominant_categories": {
+          "autoincrement": false,
+          "name": "dominant_categories",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "severity_score": {
+          "autoincrement": false,
+          "name": "severity_score",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "embedding_ref": {
+          "autoincrement": false,
+          "name": "embedding_ref",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "embedding_model": {
+          "autoincrement": false,
+          "name": "embedding_model",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "archived_at": {
+          "autoincrement": false,
+          "name": "archived_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deleted_at": {
+          "autoincrement": false,
+          "name": "deleted_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_summary_at": {
+          "autoincrement": false,
+          "name": "updated_summary_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "autoincrement": false,
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}

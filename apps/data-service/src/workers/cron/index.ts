@@ -1,6 +1,16 @@
+import { AftonbladetFeedDurableObject } from "@/durable-objects/aftonbladet-feed-do";
+
+
 export default {
     async scheduled(_: ScheduledController, env: any, ctx: ExecutionContext) {
-        const now = new Date().toISOString();
-        console.log("[CRON HELLO]", now);
-  }
+
+        const aftonbladetFeedDO = env.AFTONBLADET_FEED_DO.getByName("AftonbladetFeedDurableObject");
+        if (!aftonbladetFeedDO) {
+            throw new Error("Aftonbladet feed DO not found");
+        }
+        await aftonbladetFeedDO.parseRSSFeed();
+        console.log("[CRON PARSE RSS FEED] ");
+    },
 };
+
+export { AftonbladetFeedDurableObject} from "@/durable-objects/aftonbladet-feed-do"

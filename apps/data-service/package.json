@@ -1,5 +1,5 @@
 {
-  "name": "data-service",
+  "name": "filter-news-data-service",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -10,15 +10,17 @@
     "cf-typegen": "wrangler types --env-interface BaseEnv"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.8.19",
-    "@types/node": "^22.15.19",
-    "typescript": "^5.5.2",
-    "vitest": "~3.2.0",
-    "wrangler": "^4.54.0"
+    "@cloudflare/vitest-pool-workers": "^0.8.71",
+    "@types/node": "^22.19.3",
+    "typescript": "^5.9.3",
+    "vitest": "~3.2.4",
+    "wrangler": "^4.55.0"
   },
   "dependencies": {
     "@repo/data-ops": "workspace:*",
-    "hono": "^4.8.3",
-    "zod": "^3.25.67"
+    "fast-xml-parser": "^5.3.3",
+    "hono": "^4.11.1",
+    "rss-parser": "^3.13.0",
+    "zod": "^3.25.76"
   }
 }

@@ -1,0 +1,1 @@
+export const aftonbladetRSSFeed = "https://rss.aftonbladet.se/rss2/small/pages/sections/senastenytt/"

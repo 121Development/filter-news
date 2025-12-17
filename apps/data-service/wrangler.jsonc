@@ -4,12 +4,39 @@
  */
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "saas-kit-data-service",
+  "name": "filter-news-data-service",
   "main": "./src/index.ts",
   "compatibility_date": "2025-04-01",
   "compatibility_flags": ["nodejs_compat"],
 
   "observability": {
-    "enabled": true,
+    "enabled": true
   },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "filter-news-database-stage",
+      "database_id": "7e0dc241-78e2-4f26-94cf-73f4855e5902",
+      "remote": true
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "AFTONBLADET_FEED_DO",
+        "class_name": "AftonbladetFeedDurableObject"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_classes": ["AftonbladetFeedDurableObject"]
+    }
+  ],
+  "triggers": {
+    "consumers": [{
+      "queue": "new-items-queue"
+    }]}
 }
+
