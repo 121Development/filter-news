@@ -10,7 +10,7 @@ export default {
     },
 };
 
-export { AftonbladetFeedDurableObject} from "@/durable-objects/aftonbladet-feed-do"
+export { AftonbladetFeedDurableObject } from "../../data-service/src/durable-objects/aftonbladet-feed-do"
 
 //async fetch(req, env): Promise<Response> {
 //    return new Response("Todo");

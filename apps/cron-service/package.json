@@ -1,0 +1,8 @@
+{
+    "name": "cron-service",
+    "private": true,
+    "dependencies": {
+      "@repo/data-ops": "workspace:*"
+    }
+  }
+  

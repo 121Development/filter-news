@@ -1,10 +1,9 @@
 {
     "$schema": "../../../../../node_modules/wrangler/config-schema.json",
     "name": "cron-service",
-    "main": "index.ts",
+    "main": "./src/index.ts",
     "compatibility_date": "2025-12-12",
     "compatibility_flags": ["nodejs_compat"],
-  
     "triggers": {
       "crons": ["*/1 * * * *"]
     },
