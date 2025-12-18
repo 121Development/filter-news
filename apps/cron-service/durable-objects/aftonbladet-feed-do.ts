@@ -1,7 +1,7 @@
 // src/durable-objects/FeedDurableObject.ts
 import { DurableObject } from "cloudflare:workers";
 import { XMLParser } from 'fast-xml-parser';
-import { NewItemMessage } from "../../../../packages/data-ops/src/types/messages";
+import { NewItemMessage } from "../../../packages/data-ops/src/types/messages";
 
 export class AftonbladetFeedDurableObject extends DurableObject {
   hashes: string[] = [];
@@ -37,6 +37,8 @@ export class AftonbladetFeedDurableObject extends DurableObject {
 
   async parseRSSFeed() {
     //await this.env.NEW_ITEMS_QUEUE.send("Cron checker message");
+    console.log(`[parseRSSFeed] Starting parse. Current hashes in memory: ${this.hashes.length}`);
+
     const response = await fetch('https://rss.aftonbladet.se/rss2/small/pages/sections/senastenytt/');
     const xmlData = await response.text();
 
@@ -63,6 +65,8 @@ export class AftonbladetFeedDurableObject extends DurableObject {
       const newItems = [];
       for (const item of processedItems) {
         const isNew = await this.checkAndAddItem(item.hash, item);
+        console.log(`[parseRSSFeed] Item "${item.title.substring(0, 50)}..." - isNew: ${isNew}, hash: ${item.hash.substring(0, 16)}...`);
+
         if (isNew) {
           const queueMessage: NewItemMessage = {
             type: "NEW_FEED_ITEM",
@@ -80,6 +84,14 @@ export class AftonbladetFeedDurableObject extends DurableObject {
           await this.env.NEW_ITEMS_QUEUE.send(queueMessage);
           console.log(`Added item with title ${queueMessage.title} to queue`);
         }
+      }
+
+      // Clean up old hashes to prevent unbounded growth
+      // Keep last 50 items to allow for RSS feed overlap
+      if (this.hashes.length > 50) {
+        console.log(`[parseRSSFeed] Cleaning up old hashes. Before: ${this.hashes.length}`);
+        await this.deleteOldHashes(50);
+        console.log(`[parseRSSFeed] After cleanup: ${this.hashes.length}`);
       }
 
       // console.log("Parsed 5 items:");
@@ -116,8 +128,9 @@ export class AftonbladetFeedDurableObject extends DurableObject {
 
   async deleteOldHashes(keepCount: number = 10) {
     const hashes = await this.ctx.storage.get<string[]>("hashes") || [];
-    const latestHashes = hashes.slice(0, keepCount);
-    const hashesToDelete = hashes.slice(keepCount);
+    // Keep the LAST N items (most recent), delete the older ones
+    const latestHashes = hashes.slice(-keepCount);
+    const hashesToDelete = hashes.slice(0, -keepCount);
 
     // Delete old items
     for (const hash of hashesToDelete) {
@@ -125,6 +138,7 @@ export class AftonbladetFeedDurableObject extends DurableObject {
     }
 
     await this.ctx.storage.put("hashes", latestHashes);
+    this.hashes = latestHashes; // Update in-memory array too
     return latestHashes;
   }
 

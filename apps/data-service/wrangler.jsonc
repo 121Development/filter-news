@@ -33,15 +33,6 @@
       "tag": "v1",
       "new_classes": ["AftonbladetFeedDurableObject"]
     }
-  ],
- "queues": {
-    "consumers": [{
-      "queue": "new-items-queue"
- }],
-    "producers": [{
-      "binding": "NEW_ITEMS_QUEUE",
-      "queue": "new-items-queue"
-    }]
-  }
+  ]
 }
 
