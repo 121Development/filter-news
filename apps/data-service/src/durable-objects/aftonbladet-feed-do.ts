@@ -1,24 +1,16 @@
 // src/durable-objects/FeedDurableObject.ts
 import { DurableObject } from "cloudflare:workers";
 import { XMLParser } from 'fast-xml-parser';
+import { NewItemMessageSchema } from "../../../../packages/data-ops/src/types/messages";
 
 export class AftonbladetFeedDurableObject extends DurableObject {
-  count: number = 0
+  hashes: string[] = [];
 
   constructor(ctx: DurableObjectState, env: Env) {
       super(ctx, env)
       ctx.blockConcurrencyWhile(async () => {
-          this.count = await ctx.storage.get("count") || this.count
+          this.hashes = await this.ctx.storage.get<string[]>("hashes") || this.hashes;
       })
-  }
-
-  async increment() {
-      this.count++
-      await this.ctx.storage.put("count", this.count)
-  }
-
-  async getCount() {
-      return this.count
   }
 
   async generateHash(text: string): Promise<string> {
@@ -31,21 +23,20 @@ export class AftonbladetFeedDurableObject extends DurableObject {
   }
 
   async checkAndAddItem(hash: string, item: any): Promise<boolean> {
-    const hashes = await this.ctx.storage.get<string[]>("hashes") || [];
-
-    if (hashes.includes(hash)) {
-      console.log(`Item with hash ${hash} already exists, skipping...`);
+    if (this.hashes.includes(hash)) {
+      //console.log(`Item with hash ${hash} already exists, skipping...`);
       return false;
     }
 
-    hashes.push(hash);
-    await this.ctx.storage.put("hashes", hashes);
+    this.hashes.push(hash);
+    await this.ctx.storage.put("hashes", this.hashes);
     await this.ctx.storage.put(`item:${hash}`, item);
     console.log(`Added item with hash ${hash} to storage`);
     return true;
   }
 
   async parseRSSFeed() {
+    //await this.env.NEW_ITEMS_QUEUE.send("Cron checker message");
     const response = await fetch('https://rss.aftonbladet.se/rss2/small/pages/sections/senastenytt/');
     const xmlData = await response.text();
 
@@ -73,7 +64,21 @@ export class AftonbladetFeedDurableObject extends DurableObject {
       for (const item of processedItems) {
         const isNew = await this.checkAndAddItem(item.hash, item);
         if (isNew) {
+          const queueMessage = NewItemMessageSchema.parse({
+            type: "NEW_FEED_ITEM",
+            feedId: "aftonbladet",
+            sourceId: "aftonbladet",
+            itemGuid: undefined,
+            url: item.link,
+            title: item.title,
+            publishedAt: undefined,
+            fingerprint: item.hash,
+            firstSeenAt: Date.now(),
+          });
+
           newItems.push(item);
+          await this.env.NEW_ITEMS_QUEUE.send(queueMessage);
+          console.log(`Added item with title ${queueMessage.title} to queue`);
         }
       }
 
@@ -122,4 +127,5 @@ export class AftonbladetFeedDurableObject extends DurableObject {
     await this.ctx.storage.put("hashes", latestHashes);
     return latestHashes;
   }
+
 }

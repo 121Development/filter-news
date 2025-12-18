@@ -1,6 +1,3 @@
-import { AftonbladetFeedDurableObject } from "@/durable-objects/aftonbladet-feed-do";
-
-
 export default {
     async scheduled(_: ScheduledController, env: any, ctx: ExecutionContext) {
 
@@ -14,3 +11,7 @@ export default {
 };
 
 export { AftonbladetFeedDurableObject} from "@/durable-objects/aftonbladet-feed-do"
+
+//async fetch(req, env): Promise<Response> {
+//    return new Response("Todo");
+// } satisfies ExportedHandler<Env>;
