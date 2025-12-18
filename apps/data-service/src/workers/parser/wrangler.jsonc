@@ -10,14 +10,5 @@
           "invocation_logs": true,
           "persist": true
         }
-      },
-      "queues": {
-    "consumers": [{
-      "queue": "new-items-queue"
-    }],
-    "producers": [{
-      "binding": "CATEGORISER_QUEUE",
-      "queue": "categoriser-queue"
-    }]
-    }
-  }
+      }
+}

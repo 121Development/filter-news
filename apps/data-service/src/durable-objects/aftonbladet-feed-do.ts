@@ -1,7 +1,7 @@
 // src/durable-objects/FeedDurableObject.ts
 import { DurableObject } from "cloudflare:workers";
 import { XMLParser } from 'fast-xml-parser';
-import { NewItemMessageSchema } from "../../../../packages/data-ops/src/types/messages";
+import { NewItemMessage } from "../../../../packages/data-ops/src/types/messages";
 
 export class AftonbladetFeedDurableObject extends DurableObject {
   hashes: string[] = [];
@@ -64,7 +64,7 @@ export class AftonbladetFeedDurableObject extends DurableObject {
       for (const item of processedItems) {
         const isNew = await this.checkAndAddItem(item.hash, item);
         if (isNew) {
-          const queueMessage = NewItemMessageSchema.parse({
+          const queueMessage: NewItemMessage = {
             type: "NEW_FEED_ITEM",
             feedId: "aftonbladet",
             sourceId: "aftonbladet",
@@ -74,7 +74,7 @@ export class AftonbladetFeedDurableObject extends DurableObject {
             publishedAt: undefined,
             fingerprint: item.hash,
             firstSeenAt: Date.now(),
-          });
+          };
 
           newItems.push(item);
           await this.env.NEW_ITEMS_QUEUE.send(queueMessage);

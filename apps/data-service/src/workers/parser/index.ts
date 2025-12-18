@@ -1,7 +1,3 @@
-interface Env {
-        NEW_ITEMS_QUEUE: Queue;
-      }
-
 import { WorkerEntrypoint } from "cloudflare:workers";
 
   export default class ParserWorker extends WorkerEntrypoint<Env> {
@@ -14,9 +10,4 @@ import { WorkerEntrypoint } from "cloudflare:workers";
         return new Response("Hello from the parser!");
     }
 
-    queue(batch: MessageBatch<unknown>): void | Promise<void> {
-        for (const message of batch.messages) {
-          console.log('Received', message);
-        }
-      }
-    }
+  }

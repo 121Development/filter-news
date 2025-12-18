@@ -34,7 +34,10 @@
       "new_classes": ["AftonbladetFeedDurableObject"]
     }
   ],
-  "queues": {
+ "queues": {
+    "consumers": [{
+      "queue": "new-items-queue"
+ }],
     "producers": [{
       "binding": "NEW_ITEMS_QUEUE",
       "queue": "new-items-queue"
